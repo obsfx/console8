@@ -2,14 +2,13 @@
   "name": "console8",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "./src/index.js",
   "bin": {
     "console8": "./bin/index.js",
     "obsfx@console8": "./bin/index.js"
   },
   "scripts": {
-    "run": "node ./src/index.js",
-    "link": "npm link force"
+    "link": "npm link --force"
   },
   "author": "obsfx",
   "license": "ISC",
