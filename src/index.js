@@ -2,11 +2,28 @@ const fs = require('fs');
 const readline = require('readline');
 
 const argv = require('yargs').argv;
-const ansi_escapes = require('ansi-escapes');
+const { 
+    red, 
+    green, 
+    yellow, 
+    blue, 
+    magenta, 
+    cyan 
+} = require('kleur');
 
 const chip8_cpu = require('./cpu.js');
 
+let colors = {
+    red,
+    green,
+    yellow,
+    blue,
+    magenta,
+    cyan
+}
+
 let rom = fs.readFileSync(argv.rom);
+let c = colors[argv.color];
 
 let cpu = new chip8_cpu();
 cpu.load_rom(rom);
@@ -14,51 +31,49 @@ cpu.load_rom(rom);
 readline.cursorTo(process.stdout, 0, 0);
 readline.clearScreenDown(process.stdout);
 
-// setInterval(() => {
-//     cpu.execute_cycle();
-//     let output = '';
-//     readline.cursorTo(process.stdout, 0, 0);
+// readline.emitKeypressEvents(process.stdin);
+// process.stdin.setRawMode(true);
 
-//     for (let i = 0; i < cpu.video.length; i++) {
-//         if (cpu.video[i] != 0) {
-//             // process.stdout.write('#');
-//             output += '#';
-//         } else {
-//             // process.stdout.write(' ');
-//             output += ' ';
-//         }
+let now = 0;
+let then = Date.now();
+let deltaTime = 0;
 
-//         if (i % 64 == 0) {
-//             output += "\n";
-//         }
+// process.stdin.on('keypress', (key, data) => {
+//     if (data.name == 'escape') {
+//         process.exit(0);
 //     }
+// });
 
-//     console.log(output);
-
-//     // process.stdout.write(ansi_escapes.eraseScreen);
-//     // readline.clearScreenDown(process.stdout);
-// }, 1000 / 60);
+let output = '';
 
 for(;;) {
-    cpu.execute_cycle();
-    let output = '';
-    readline.cursorTo(process.stdout, 0, 0);
+    now = Date.now();
+    deltaTime += now - then;
 
-    for (let i = 0; i < cpu.video.length; i++) {
-        if (cpu.video[i] != 0) {
-            // process.stdout.write('#');
-            output += '\u2588';
-        } else {
-            // process.stdout.write(' ');
-            output += ' ';
+    if (deltaTime > 1000 / 50) {
+        then = Date.now();
+        deltaTime = 0;
+
+        cpu.execute_cycle();
+        let output = '';
+        readline.cursorTo(process.stdout, 0, 0);
+
+        for (let i = 0, len = cpu.video.length; i < len; i++) {
+            if (cpu.video[i] != 0) {
+                // process.stdout.write('#');
+                output += '\u2588';
+            } else {
+                // process.stdout.write(' ');
+                output += ' ';
+            }
+
+            if ((i + 1) % 64 == 0) {
+                output += "\n";
+            }
         }
 
-        if (i % 64 == 0) {
-            output += "\n";
-        }
+        process.stdout.write(c(output) + '\n' + "\033[?25l");
     }
-
-    process.stdout.write(output + '\n');
 }
 
 

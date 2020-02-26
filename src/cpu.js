@@ -54,7 +54,7 @@ class CHIP8_CPU {
         }
     }
 
-    execute_cycle() {
+    async execute_cycle() {
         this.opcode = this.memory[this.program_counter] << 8 | this.memory[this.program_counter + 1];
         this.program_counter += 2;
 

@@ -13,7 +13,7 @@
   "author": "obsfx",
   "license": "ISC",
   "dependencies": {
-    "ansi-escapes": "^4.3.0",
+    "kleur": "^3.0.3",
     "yargs": "^15.1.0"
   }
 }
