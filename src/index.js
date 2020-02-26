@@ -1,17 +1,66 @@
-let fs = require('fs');
+const fs = require('fs');
+const readline = require('readline');
 
-let argv = require('yargs').argv;
+const argv = require('yargs').argv;
+const ansi_escapes = require('ansi-escapes');
 
-let chip8_cpu = require('./cpu.js');
+const chip8_cpu = require('./cpu.js');
 
 let rom = fs.readFileSync(argv.rom);
 
 let cpu = new chip8_cpu();
 cpu.load_rom(rom);
 
-setInterval(() => {
+readline.cursorTo(process.stdout, 0, 0);
+readline.clearScreenDown(process.stdout);
+
+// setInterval(() => {
+//     cpu.execute_cycle();
+//     let output = '';
+//     readline.cursorTo(process.stdout, 0, 0);
+
+//     for (let i = 0; i < cpu.video.length; i++) {
+//         if (cpu.video[i] != 0) {
+//             // process.stdout.write('#');
+//             output += '#';
+//         } else {
+//             // process.stdout.write(' ');
+//             output += ' ';
+//         }
+
+//         if (i % 64 == 0) {
+//             output += "\n";
+//         }
+//     }
+
+//     console.log(output);
+
+//     // process.stdout.write(ansi_escapes.eraseScreen);
+//     // readline.clearScreenDown(process.stdout);
+// }, 1000 / 60);
+
+for(;;) {
     cpu.execute_cycle();
-}, 1);
+    let output = '';
+    readline.cursorTo(process.stdout, 0, 0);
+
+    for (let i = 0; i < cpu.video.length; i++) {
+        if (cpu.video[i] != 0) {
+            // process.stdout.write('#');
+            output += '\u2588';
+        } else {
+            // process.stdout.write(' ');
+            output += ' ';
+        }
+
+        if (i % 64 == 0) {
+            output += "\n";
+        }
+    }
+
+    process.stdout.write(output + '\n');
+}
+
 
 
 // let fileSize = fileStat.size;

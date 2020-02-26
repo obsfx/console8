@@ -463,7 +463,7 @@ class CHIP8_CPU {
             this.delay_timer--;
         }
 
-        console.log(this.opcode.toString(16));
+        // console.log(this.opcode.toString(16));
     }
 }
 
