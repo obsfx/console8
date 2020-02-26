@@ -43,6 +43,8 @@ class CHIP8_CPU {
         this.index = 0;
         this.program_counter = this.program_counter_start_address;
 
+        this.draw_flag = false;
+
         for (let i = 0; i < this.font_set.length; i++) {
             this.memory[i + this.font_set_start_address] = this.font_set[i];
         }
@@ -319,6 +321,8 @@ class CHIP8_CPU {
                             }
                         }
                     }
+
+                    this.draw_flag = true;
                 }
             break;
 
