@@ -1,15 +1,11 @@
 const fs = require('fs');
 const readline = require('readline');
 
-// const iohook = require('iohook');
 const argv = require('minimist')(process.argv.slice(2));
 
 const config = require('./config');
 const utility = require('./utility');
 const chip8_cpu = require('./cpu');
-
-// readline.cursorTo(process.stdout, 0, 0);
-// readline.clearScreenDown(process.stdout);
 
 if (argv.help) {
     utility.print(utility.texts.help);
@@ -39,83 +35,89 @@ if (error_list.length > 0) {
     process.exit(1);
 }
 
-console.log(process.stdout.columns, process.stdout.rows);
+const iohook = require('iohook');
+
+iohook.on('keydown', e => {
+    if (e.keycode == 18 && e.ctrlKey) {
+        process.stdout.write(config.ANSI_SHOW_CURSOR);
+        utility.clear_screen();
+        console.log('terminated');
+        process.exit(0);
+    }
+
+    if (e.keycode == 28 && STATE == config.PREP_STATE) {
+        STATE = config.LOOP_STATE;
+        utility.clear_screen();
+        loop();
+    }
+
+    for (let i = 0, len = config.KEYS.length; i < len; i++) {
+        if (e.keycode == config.KEYS[i]) {
+            cpu.keypad[i] = 1;
+            break;
+        }
+    }
+});
+
+iohook.on('keyup', e => {
+    for (let i = 0, len = config.KEYS.length; i < len; i++) {
+        if (e.keycode == config.KEYS[i]) {
+            cpu.keypad[i] = 0;
+            break;
+        }
+    }
+});
+
+iohook.start();
+
+let STATE = config.PREP_STATE;
 
 let rom_buffer = fs.readFileSync(argv.rom);
 let rendering_color = (argv.color) ? config.COLORS[argv.color] : config.COLORS['white'];
+// let rendering_char = argv.rendering_char
 
+let cpu = new chip8_cpu();
+cpu.load_rom(rom_buffer);
 
+utility.clear_screen();
+utility.print(utility.texts.prep_state_text);
 
-// let rom = fs.readFileSync(argv.rom);
-// let c = colors[argv.color];
-
-// let cpu = new chip8_cpu();
-// cpu.load_rom(rom);
-
-// iohook.on('keydown', e => {
-//     if (e.keycode == 18 && e.ctrlKey) {
-//         process.stdout.write('\033[?25h');
-//         readline.cursorTo(process.stdout, 0, 0);
-//         readline.clearScreenDown(process.stdout);
-//         console.log('terminated');
-//         process.exit(0);
-//     }
-
-//     for (let i = 0, len = keys.length; i < len; i++) {
-//         if (e.keycode == keys[i]) {
-//             cpu.keypad[i] = 1;
-//             break;
-//         }
-//     }
-// });
-
-// iohook.on('keyup', e => {
-//     for (let i = 0, len = keys.length; i < len; i++) {
-//         if (e.keycode == keys[i]) {
-//             cpu.keypad[i] = 0;
-//             break;
-//         }
-//     }
-// });
-
-// iohook.start();
-
-// let output = '';
+let OUTPUT = '';
 
 const loop = _ => {
-    time.now = Date.now();
-    time.time_elapsed = time.now - time.then;
+    config.TIME.now = Date.now();
+    config.TIME.time_elapsed = config.TIME.now - config.TIME.then;
     // deltaTime += now - then;
-    if (time.time_elapsed > time.fps_interval) {
-        time.then = time.now - ((time.now - time.then) % (time.fps_interval));
+    if (config.TIME.time_elapsed > config.TIME.fps_interval) {
+        config.TIME.then = config.TIME.now - ((config.TIME.now - config.TIME.then) % (config.TIME.fps_interval));
+
         cpu.execute_cycle();
-        output = '';
+
+        OUTPUT = '';
 
         if (cpu.draw_flag) {
-            readline.cursorTo(process.stdout, 0, 0);
+            utility.cursor_to_begining();
 
             for (let i = 0, len = cpu.video.length; i < len; i++) {
                 if (cpu.video[i] == 0xFF) {
                     // process.stdout.write('#');
-                    output += '\u2588';
+                    OUTPUT += config.RENDERING_CHAR;
                     // output += '■';
                 } else {
                     // process.stdout.write(' ');
-                    output += ' ';
+                    OUTPUT += ' ';
                 }
     
                 if ((i + 1) % 64 == 0) {
-                    output += "\n";
+                    OUTPUT += "\n";
                 }
             }
 
             cpu.draw_flag = false;
 
-            process.stdout.write(c(output) + '\n' + '\033[?25l');
+            process.stdout.write(`${rendering_color(OUTPUT)}\n${config.ANSI_HIDE_CURSOR}`);
         }
     }
 
     setImmediate(loop);
 }
-
-// loop();

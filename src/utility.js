@@ -62,6 +62,14 @@ const texts = {
         `\t\t If you want to see more information you can use the --help argument.`,
         `\t\t ${config.COLORS.green('console8 --help')}`,
         ""
+    ],
+
+    prep_state_text: [
+        `console8: rom loaded. ${config.COLORS.green('ready.')}\n`,
+
+        `Press ${config.COLORS.green('[ENTER]')} to start the game.`,
+        `When you want to terminate the emulation use ${config.COLORS.yellow('[CTRL] + [E]')}.`,
+        'CHIP8 requires 64x32 display so please adjust your terminal size for appropriate rendering before starting the emulation.'
     ]
 }
 

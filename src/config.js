@@ -37,5 +37,8 @@ module.exports = {
         time_elapsed: 0,
         speed: 320,
         fps_interval: 1000 / 320
-    }
+    },
+
+    PREP_STATE: 0,
+    LOOP_STATE: 1
 }
