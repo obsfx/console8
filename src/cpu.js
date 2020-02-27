@@ -304,6 +304,8 @@ class CHIP8_CPU {
     
                     let xPos = this.registers[rx] % this.width;
                     let yPos = this.registers[ry] % this.height;
+
+                    this.registers[15] = 0;
     
                     for (let row = 0; row < h; row++) {
                         let spriteByte = this.memory[this.index + row];

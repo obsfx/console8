@@ -8,11 +8,13 @@
     "obsfx@console8": "./bin/index.js"
   },
   "scripts": {
+    "test": "node ./bin/index.js --rom=./wipeoff.rom --color=green",
     "link": "npm link --force"
   },
   "author": "obsfx",
   "license": "ISC",
   "dependencies": {
+    "iohook": "^0.6.5",
     "kleur": "^3.0.3",
     "yargs": "^15.1.0"
   }
