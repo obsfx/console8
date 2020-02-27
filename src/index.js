@@ -1,146 +1,95 @@
 const fs = require('fs');
 const readline = require('readline');
 
-const iohook = require('iohook');
-const argv = require('yargs').argv;
-const { 
-    red, 
-    green, 
-    yellow, 
-    blue, 
-    magenta, 
-    cyan 
-} = require('kleur');
+// const iohook = require('iohook');
+const argv = require('minimist')(process.argv.slice(2));
 
-const chip8_cpu = require('./cpu.js');
+const config = require('./config');
+const utility = require('./utility');
+const chip8_cpu = require('./cpu');
 
-let colors = {
-    red,
-    green,
-    yellow,
-    blue,
-    magenta,
-    cyan
+// readline.cursorTo(process.stdout, 0, 0);
+// readline.clearScreenDown(process.stdout);
+
+if (argv.help) {
+    utility.print(utility.texts.help);
+    process.exit(0);
 }
 
-let rom = fs.readFileSync(argv.rom);
-let c = colors[argv.color];
+let error_list = [];
 
-let cpu = new chip8_cpu();
-cpu.load_rom(rom);
+if (!argv.rom) {
+    error_list = [ ...error_list, ...utility.texts.missing_rom_arg_warning ];
+}
 
-readline.cursorTo(process.stdout, 0, 0);
-readline.clearScreenDown(process.stdout);
+if (argv.speed && !Number.isInteger(argv.speed)) {
+    error_list = [ ...error_list, ...utility.texts.speed_arg_warning ];
+}
 
-readline.emitKeypressEvents(process.stdin);
-process.stdin.setRawMode(true);
+if (argv.color && Object.keys(config.COLORS).indexOf(argv.color) < 0) {
+    error_list = [ ...error_list, ...utility.texts.color_arg_warning ];
+}
 
-let now = 0;
-let then = Date.now();
-let deltaTime = 0;
+if (!fs.existsSync(argv.rom)) {
+    error_list = [ ...error_list, ...utility.texts.rom_path_warning ];
+}
 
-process.stdin.on('keypress', (key, data) => {
-    // if (data.name == 'escape') {
-    //     process.exit(0);
-    // }
+if (error_list.length > 0) {
+    utility.print(error_list);
+    process.exit(1);
+}
 
-    
+console.log(process.stdout.columns, process.stdout.rows);
 
-    if (data.name == 'e' && data.ctrl) {
-        readline.cursorTo(process.stdout, 0, 0);
-        readline.clearScreenDown(process.stdout);
-        process.stdout.write('\033[?25h');
-        console.log('terminated');
-        process.exit(0);
-    }
+let rom_buffer = fs.readFileSync(argv.rom);
+let rendering_color = (argv.color) ? config.COLORS[argv.color] : config.COLORS['white'];
 
-    // console.log(data, "-", key);
-});
 
-iohook.on('keydown', e => {
-    if (e.keycode == 2) {
-        cpu.keypad[0] = 1;
-    } else if (e.keycode == 3) {
-        cpu.keypad[1] = 1;
-    } else if (e.keycode == 4) {
-        cpu.keypad[2] = 1;
-    } else if (e.keycode == 5) {
-        cpu.keypad[3] = 1;
-    } else if (e.keycode == 16) {
-        cpu.keypad[4] = 1;
-    } else if (e.keycode == 17) {
-        cpu.keypad[5] = 1;
-    } else if (e.keycode == 18) {
-        cpu.keypad[6] = 1;
-    } else if (e.keycode == 19) {
-        cpu.keypad[7] = 1;
-    } else if (e.keycode == 30) {
-        cpu.keypad[8] = 1;
-    } else if (e.keycode == 31) {
-        cpu.keypad[9] = 1;
-    } else if (e.keycode == 32) {
-        cpu.keypad[10] = 1;
-    } else if (e.keycode == 33) {
-        cpu.keypad[11] = 1;
-    } else if (e.keycode == 44) {
-        cpu.keypad[12] = 1;
-    } else if (e.keycode == 45) {
-        cpu.keypad[13] = 1;
-    } else if (e.keycode == 46) {
-        cpu.keypad[14] = 1;
-    } else if (e.keycode == 47) {
-        cpu.keypad[15] = 1;
-    }
-});
 
-iohook.on('keyup', e => {
-    if (e.keycode == 2) {
-        cpu.keypad[0] = 0;
-    } else if (e.keycode == 3) {
-        cpu.keypad[1] = 0;
-    } else if (e.keycode == 4) {
-        cpu.keypad[2] = 0;
-    } else if (e.keycode == 5) {
-        cpu.keypad[3] = 0;
-    } else if (e.keycode == 16) {
-        cpu.keypad[4] = 0;
-    } else if (e.keycode == 17) {
-        cpu.keypad[5] = 0;
-    } else if (e.keycode == 18) {
-        cpu.keypad[6] = 0;
-    } else if (e.keycode == 19) {
-        cpu.keypad[7] = 0;
-    } else if (e.keycode == 30) {
-        cpu.keypad[8] = 0;
-    } else if (e.keycode == 31) {
-        cpu.keypad[9] = 0;
-    } else if (e.keycode == 32) {
-        cpu.keypad[10] = 0;
-    } else if (e.keycode == 33) {
-        cpu.keypad[11] = 0;
-    }else if (e.keycode == 44) {
-        cpu.keypad[12] = 0;
-    }else if (e.keycode == 45) {
-        cpu.keypad[13] = 0;
-    }else if (e.keycode == 46) {
-        cpu.keypad[14] = 0;
-    }else if (e.keycode == 47) {
-        cpu.keypad[15] = 0;
-    }
-});
+// let rom = fs.readFileSync(argv.rom);
+// let c = colors[argv.color];
 
-iohook.start();
+// let cpu = new chip8_cpu();
+// cpu.load_rom(rom);
 
-let output = '';
+// iohook.on('keydown', e => {
+//     if (e.keycode == 18 && e.ctrlKey) {
+//         process.stdout.write('\033[?25h');
+//         readline.cursorTo(process.stdout, 0, 0);
+//         readline.clearScreenDown(process.stdout);
+//         console.log('terminated');
+//         process.exit(0);
+//     }
+
+//     for (let i = 0, len = keys.length; i < len; i++) {
+//         if (e.keycode == keys[i]) {
+//             cpu.keypad[i] = 1;
+//             break;
+//         }
+//     }
+// });
+
+// iohook.on('keyup', e => {
+//     for (let i = 0, len = keys.length; i < len; i++) {
+//         if (e.keycode == keys[i]) {
+//             cpu.keypad[i] = 0;
+//             break;
+//         }
+//     }
+// });
+
+// iohook.start();
+
+// let output = '';
 
 const loop = _ => {
-    now = Date.now();
+    time.now = Date.now();
+    time.time_elapsed = time.now - time.then;
     // deltaTime += now - then;
-    if (now - then > 1000 / 500) {
+    if (time.time_elapsed > time.fps_interval) {
+        time.then = time.now - ((time.now - time.then) % (time.fps_interval));
         cpu.execute_cycle();
-        then = Date.now();
-        deltaTime = 0;
-        let output = '';
+        output = '';
 
         if (cpu.draw_flag) {
             readline.cursorTo(process.stdout, 0, 0);
@@ -162,56 +111,11 @@ const loop = _ => {
 
             cpu.draw_flag = false;
 
-            process.stdout.write(c(output) + '\n' + "\033[?25l" + '\n');
+            process.stdout.write(c(output) + '\n' + '\033[?25l');
         }
     }
 
     setImmediate(loop);
 }
 
-loop();
-
-// for(;;) {
-//     now = Date.now();
-//     deltaTime += now - then;
-
-//     if (deltaTime > 1000 / 50) {
-//         then = Date.now();
-//         deltaTime = 0;
-
-//         cpu.execute_cycle();
-//         let output = '';
-//         readline.cursorTo(process.stdout, 0, 0);
-
-//         for (let i = 0, len = cpu.video.length; i < len; i++) {
-//             if (cpu.video[i] != 0) {
-//                 // process.stdout.write('#');
-//                 output += '\u2588';
-//             } else {
-//                 // process.stdout.write(' ');
-//                 output += ' ';
-//             }
-
-//             if ((i + 1) % 64 == 0) {
-//                 output += "\n";
-//             }
-//         }
-
-//         process.stdout.write(c(output) + '\n' + "\033[?25l");
-//     }
-// }
-
-
-
-// let fileSize = fileStat.size;
-// let loaded = 0;
-
-// let readStream = fs.createReadStream(argv.rom);
-
-// readStream.on('data', (data) => {
-//     console.log(data.length);
-// });
-
-// readStream.on('end', () => {
-//     console.log('done');
-// });
+// loop();

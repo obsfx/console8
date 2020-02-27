@@ -16,6 +16,6 @@
   "dependencies": {
     "iohook": "^0.6.5",
     "kleur": "^3.0.3",
-    "yargs": "^15.1.0"
+    "minimist": "^1.2.0"
   }
 }
