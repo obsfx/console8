@@ -19,11 +19,11 @@ if (!argv.rom) {
     error_list = [ ...error_list, ...outputs.missing_rom_arg_warning ];
 }
 
-if (argv.speed && !Number.isInteger(argv.speed)) {
+if (argv.speed != undefined && !Number.isInteger(argv.speed)) {
     error_list = [ ...error_list, ...outputs.speed_arg_warning ];
 }
 
-if (argv.color && Object.keys(config.COLORS).indexOf(argv.color) < 0) {
+if (argv.color != undefined && Object.keys(config.COLORS).indexOf(argv.color) < 0) {
     error_list = [ ...error_list, ...outputs.color_arg_warning ];
 }
 
