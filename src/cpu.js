@@ -26,11 +26,11 @@ class CHIP8_CPU {
         ];
 
         this.reset();
+        this.reset_memory();
     }
 
     reset() {
         this.registers = new Uint8Array(16);
-        this.memory = new Uint8Array(4096);
         this.video = new Uint8Array(this.width * this.height);
         this.keypad = new Uint8Array(16);
         
@@ -44,6 +44,10 @@ class CHIP8_CPU {
         this.program_counter = this.program_counter_start_address;
 
         this.draw_flag = false;
+    }
+
+    reset_memory() {
+        this.memory = new Uint8Array(4096);
 
         for (let i = 0; i < this.font_set.length; i++) {
             this.memory[i + this.font_set_start_address] = this.font_set[i];

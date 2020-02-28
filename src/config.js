@@ -35,8 +35,8 @@ module.exports = {
         now: 0,
         then: Date.now(),
         time_elapsed: 0,
-        speed: 320,
-        fps_interval: 1000 / 320
+        speed: 450,
+        fps_interval: 1000 / 450
     },
 
     PREP_STATE: 0,
