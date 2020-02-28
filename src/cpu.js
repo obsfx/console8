@@ -75,6 +75,8 @@ class CHIP8_CPU {
                                 while (i < this.video.length) {
                                     this.video[i++] = 0;
                                 }
+
+                                this.draw_flag = true;
                             }
                         break;
     
@@ -406,6 +408,8 @@ class CHIP8_CPU {
                                             for (let i = 0; i <= register; i++) {
                                                 this.memory[this.index + i] = this.registers[i];
                                             }
+
+                                            this.index += register + 1
                                         }
                                     break;
         
@@ -416,6 +420,8 @@ class CHIP8_CPU {
                                             for (let i = 0; i <= register; i++) {
                                                 this.registers[i] = this.memory[this.index + i];
                                             }
+
+                                            this.index += register + 1
                                         }
                                     break;
         
@@ -433,7 +439,13 @@ class CHIP8_CPU {
                         case 0x000E:
                             {
                                 let register = (this.opcode & 0x0F00) >> 8;
-    
+                                
+                                if (this.index + this.registers[register] > 0xFFF) {
+                                    this.registers[15] = 1;
+                                } else {
+                                    this.registers[15] = 0;
+                                }
+
                                 this.index += this.registers[register];
                             }
                         break;
