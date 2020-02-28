@@ -1,0 +1,21 @@
+{
+  "name": "console8",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./src/index.js",
+  "bin": {
+    "console8": "./bin/index.js",
+    "obsfx@console8": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "node ./bin/index.js --rom=./wipeoff.rom --color=green",
+    "link": "npm link --force"
+  },
+  "author": "obsfx",
+  "license": "ISC",
+  "dependencies": {
+    "iohook": "^0.6.5",
+    "kleur": "^3.0.3",
+    "minimist": "^1.2.0"
+  }
+}

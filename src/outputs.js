@@ -5,6 +5,8 @@ module.exports = {
         'console8: help',
 
         `\t ${config.COLORS.yellow('args:')}`,
+        `\t\t --help\n`,
+
         `\t\t --rom=<single file rom path> eg: --rom=./wipeoff.rom\n`,
 
         `\t\t --color=<rendering color of ON bits> (optional, default: white)`,
