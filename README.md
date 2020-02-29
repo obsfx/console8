@@ -2,7 +2,7 @@
 
 # console8
 
-`console8` is a *yet another chip8 emulator* but works on your **command line**. `console8` simply uses your command line to render the graphics and does not require any GUI. 
+`console8` is *yet another chip8 emulator* but works on your **command line**. `console8` simply uses your command line to render the graphics and does not require any GUI. 
 
 
 
