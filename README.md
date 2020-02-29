@@ -1,6 +1,6 @@
 ![](https://raw.githubusercontent.com/obsfx/console8/master/media/logo.png)
 
-# console8
+# console8 [![npm version](https://badge.fury.io/js/console8.svg)](https://badge.fury.io/js/console8)
 
 `console8` is *yet another chip8 emulator* but works on your **command line**. `console8` simply uses your command line to render the graphics and does not require any GUI. 
 
@@ -12,7 +12,7 @@
 npm install -g console8
 ```
 
-`console8` uses `iohooks` package to handle the keyboard events so you may have to install with `sudo` for post installation and execute with `sudo` to get necessary permissions from your system.
+`console8` uses `iohooks` package to handle the keyboard events so you may have to install with `sudo` and -`-unsafe-perm=true` for post installation and execute with `sudo` to get necessary permissions from your system.
 
 # how to use
 

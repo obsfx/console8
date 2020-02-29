@@ -1,7 +1,7 @@
 {
   "name": "console8",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.0.2",
+  "description": "yet another chip-8 emulator that works on your command line interface.",
   "main": "./src/index.js",
   "bin": {
     "console8": "./bin/index.js",
@@ -11,8 +11,26 @@
     "test": "node ./bin/index.js --rom=./wipeoff.rom --color=green",
     "link": "npm link --force"
   },
+  "keywords": [
+    "console",
+    "8",
+    "tool",
+    "command",
+    "line",
+    "interface",
+    "terminal",
+    "cli",
+    "emulator",
+    "output",
+    "user-friendly",
+    "chip8"
+  ],
   "author": "obsfx",
-  "license": "ISC",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/obsfx/console8.git"
+  },
   "dependencies": {
     "iohook": "^0.6.5",
     "kleur": "^3.0.3",
