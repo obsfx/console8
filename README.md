@@ -12,7 +12,7 @@
 npm install -g console8
 ```
 
-`console8` uses `iohooks` package to handle the keyboard events so you may have to install with `sudo` and -`-unsafe-perm=true` for post installation and execute with `sudo` to get necessary permissions from your system.
+`console8` uses `iohook` package to handle the keyboard events so you may have to install with `sudo` and -`-unsafe-perm=true` for post installation and execute with `sudo` to get necessary permissions from your system.
 
 # how to use
 
