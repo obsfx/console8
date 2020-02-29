@@ -83,6 +83,6 @@ I learned tons of things from these great resources. If you are interested in em
 
 
 
-#### Source Reading
+#### *Source Reading*
 
 `JamesGriffin / CHIP-8-Emulator` https://github.com/JamesGriffin/CHIP-8-Emulator
