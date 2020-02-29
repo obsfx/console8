@@ -12,9 +12,11 @@
 npm install -g console8
 ```
 
-
+`console8` uses `iohooks` package to handle the keyboard events so you may have to install with `sudo` for post installation and execute with `sudo` to get necessary permissions from your system.
 
 # how to use
+
+![](https://raw.githubusercontent.com/obsfx/console8/master/media/1.gif)
 
 You can simply use by passing `--rom` argument with the path of the rom file.
 
@@ -41,23 +43,37 @@ console8 --help
 
 
 
-###### breakout
-
-![](https://raw.githubusercontent.com/obsfx/console8/master/media/1.gif)
-
-###### ufo
+###### wall
 
 ![](https://raw.githubusercontent.com/obsfx/console8/master/media/2.gif)
 
-###### wall
+###### ufo
 
 ![](https://raw.githubusercontent.com/obsfx/console8/master/media/3.gif)
+
+###### wipeoff with custom rendering character
+
+![](https://raw.githubusercontent.com/obsfx/console8/master/media/4.gif)
 
 
 
 # a warning
 
 `console8` is an *experimental learning project* so some roms can be **buggy**.
+
+
+
+# compatibility
+
+I have tested on **Ubuntu 19.10** / **Lubuntu 19.10** / **Windows 10 x64**. I am not sure about macOS compatibility.
+
+
+
+# for rom files
+
+Rom files are not included with npm installation but you can find some of them in this github repository;
+
+`badlogic / chip8`  https://github.com/badlogic/chip8/tree/master/roms
 
 
 
