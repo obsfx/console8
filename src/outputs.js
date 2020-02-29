@@ -18,8 +18,6 @@ module.exports = {
 
         `\t ${config.COLORS.yellow('keys:')}`,
 
-        `\t\t [CTRL] + [E]: Terminate the emulator.`,
-
         `\t\t controls:`,
         `\t\t [ 1 ] | [ 2 ] | [ 3 ] | [ 4 ]`,
         `\t\t [ Q ] | [ W ] | [ E ] | [ R ]`,
@@ -69,7 +67,6 @@ module.exports = {
 
         `Press ${config.COLORS.green('[ENTER]')} to ${config.COLORS.green('START')} the game.`,
         `When you want to ${config.COLORS.cyan('RESTART')} the emulation use ${config.COLORS.cyan('[CTRL] + [R]')}.`,
-        `When you want to ${config.COLORS.yellow('TERMINATE')} the emulation use ${config.COLORS.yellow('[CTRL] + [E]')}.`,
         'CHIP8 requires 64x32 display so please adjust your terminal size for appropriate rendering before starting the emulation.\n',
         `\t controls:`,
         `\t [ 1 ] | [ 2 ] | [ 3 ] | [ 4 ]`,

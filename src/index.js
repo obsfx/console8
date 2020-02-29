@@ -1,5 +1,4 @@
 const fs = require('fs');
-const readline = require('readline');
 
 const argv = require('minimist')(process.argv.slice(2));
 
@@ -40,11 +39,13 @@ const iohook = require('iohook');
 
 iohook.on('keydown', e => {
 
-    if (e.keycode == 18 && e.ctrlKey) {
-        process.stdout.write(config.ANSI_SHOW_CURSOR);
-        utility.clear_screen();
-        process.exit(0);
-    }
+    // if (e.keycode == 18 && e.ctrlKey) {
+    //     utility.clear_screen();
+    //     process.stdout.write(config.ANSI_SHOW_CURSOR);
+    //     process.stdin.setRawMode(false);
+    //     process.stdin.resume();
+    //     process.exit(0);
+    // }
 
     if (e.keycode == 19 && e.ctrlKey && STATE == config.LOOP_STATE) {
         STATE = config.PREP_STATE;
@@ -106,7 +107,8 @@ const loop = _ => {
         OUTPUT = '';
 
         if (cpu.draw_flag) {
-            utility.cursor_to_begining();
+            utility.clear_screen();
+
 
             for (let i = 0, len = cpu.video.length; i < len; i++) {
                 if (cpu.video[i] == 0xFF) {
@@ -122,7 +124,7 @@ const loop = _ => {
 
             cpu.draw_flag = false;
 
-            process.stdout.write(`${rendering_color(OUTPUT)}\n${config.ANSI_HIDE_CURSOR}`);
+            process.stdout.write(`${rendering_color(OUTPUT)}\n`);
         }
     }
 
