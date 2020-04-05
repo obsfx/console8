@@ -1,6 +1,6 @@
 {
   "name": "console8",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "yet another chip-8 emulator that works on your command line interface.",
   "main": "./src/index.js",
   "bin": {
@@ -8,7 +8,9 @@
     "obsfx@console8": "./bin/index.js"
   },
   "scripts": {
-    "test": "node ./bin/index.js --rom=./wipeoff.rom --color=green",
+    "run-dev": "node ./bin/index_dev.js --rom=./roms/wipeoff.rom --color=green",
+    "run": "node ./bin/index.js --rom=./roms/wipeoff.rom --color=green",
+    "minify": "minify ./src -d ./build",
     "link": "npm link --force"
   },
   "keywords": [
@@ -34,6 +36,9 @@
   "dependencies": {
     "iohook": "^0.6.5",
     "kleur": "^3.0.3",
-    "minimist": "^1.2.0"
+    "minimist": ">=1.2.3"
+  },
+  "devDependencies": {
+    "babel-minify": "^0.5.1"
   }
 }
