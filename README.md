@@ -79,7 +79,7 @@ Rom files are not included with npm installation but you can find some of them i
 
 # cool resources
 
-I learned tons of things from these great resources. If you are interested in emulators and if you want to learn how they are work, you may want to check them out;
+I learned tons of things from these great resources. If you are interested in emulators and if you want to learn how they work, you may want to check them out;
 
 
 
